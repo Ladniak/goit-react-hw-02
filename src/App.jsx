@@ -7,23 +7,30 @@ import { useEffect, useState } from "react";
 function App() {
   const [reactions, setReactions] = useState(() => {
     const val = localStorage.getItem("countValue");
-    const parsedVal = JSON.parse(val) ?? { good: 0, netural: 0, bad: 0 }
+    const parsedVal = JSON.parse(val) ?? { good: 0, neutral: 0, bad: 0 }
 
     return parsedVal;
   });
 
   const updateFeedback = (feedbackType) => {
-    setReactions({ ...reactions, [feedbackType]: reactions[feedbackType] + 1 });
+    setReactions((prevReactions) => ({
+      ...prevReactions,
+      [feedbackType]: prevReactions[feedbackType] + 1
+    }));
   };
 
+
   const onResetClick = () => {
-    setReactions({ ...reactions, good: reactions.good = 0 });
-    setReactions({ ...reactions, netural: reactions.netural = 0 });
-    setReactions({ ...reactions, bad: reactions.bad = 0 });
+    setReactions({
+      ...reactions,
+      good: 0,
+      neutral: 0,
+      bad: 0
+    });
   }
 
-  const totalFeedback = reactions.good + reactions.netural + reactions.bad;
-  const totalPositivePercent = Math.round((reactions.good / totalFeedback) * 100);
+  const totalFeedback = reactions.good + reactions.neutral + reactions.bad;
+  const totalPositivePercent = totalFeedback > 0 ? Math.round((reactions.good / totalFeedback) * 100) : 0;
 
   useEffect(() => {
     const stringifiedVal = JSON.stringify(reactions);
