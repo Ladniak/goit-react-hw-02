@@ -1,0 +1,5 @@
+.buttonsDiv {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 3px;
+}
